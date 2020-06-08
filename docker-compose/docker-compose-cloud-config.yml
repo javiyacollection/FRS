@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  service-registry:
+    image: 'amdocsoss/service-registry'
+    ports:
+      - '8761:8761'
+    container_name: 'service-registry'
+    networks:
+      - ms-network
+  cloud-config-api:
+    image: 'amdocsoss/cloud-config-api'
+    ports:
+      - '9192:9192'
+    links:
+      - service-registry
+    environment:
+      SERVICE_URL_DEFAULT_ZONE: http://service-registry:8761/eureka
+    container_name: 'cloud-config-api'
+    depends_on:
+      - service-registry
+    command: service-registry:8761
+    networks:
+      - ms-network
+
+networks:
+  ms-network:
+    driver: bridge

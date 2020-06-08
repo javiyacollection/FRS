@@ -1,0 +1,42 @@
+server:
+  port: 9194
+spring:
+  application:
+    name: FERA
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: amdocs-ctl
+#      kafka:
+#        bootstrap.servers: kafka-server:9092
+#        binder:
+#          brokers: kafka-server:9092
+#        streams:
+#          timeWindow.length: 500
+#          binder:
+#            brokers: kafka-server:9092
+#            zkNodes: zookeeper-server:2181
+      kafka:
+        bootstrap.servers: localhost:9999
+        binder:
+          brokers: localhost:9999
+        streams:
+          timeWindow.length: 500
+          binder:
+            brokers: localhost:9999
+            zkNodes: localhost:5181
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    hostname: localhost
+
+logging:
+  file: C:/Users/jjaviya/IdeaProjects/oss-ms-architecture/logs/microservice-logs.log
+
+
+

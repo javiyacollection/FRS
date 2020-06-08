@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  cloud-gateway:
+    image: 'amdocsoss/cloud-gateway'
+    ports:
+      - '9195:9195'
+    environment:
+      CLOUD_CONFIG_URI: http://cloud-config-api:9192
+    container_name: 'cloud-gateway'
+    networks:
+      - ms-network
+  rule-framework:
+    image: 'amdocsoss/rule-framework'
+    ports:
+      - '9193:9193'
+    environment:
+      CLOUD_CONFIG_URI: http://cloud-config-api:9192
+    container_name: 'rule-framework'
+    networks:
+      - ms-network
+  fera:
+    image: 'amdocsoss/fera'
+    ports:
+      - '9194:9194'
+    environment:
+      CLOUD_CONFIG_URI: http://cloud-config-api:9192
+    container_name: 'fera'
+    networks:
+      - ms-network
+  hystrix-dashboard:
+    image: 'amdocsoss/hystrix-dashboard'
+    ports:
+      - '9196:9196'
+    container_name: 'hystrix-dashboard'
+    networks:
+      - ms-network
+
+networks:
+  ms-network:
+    driver: bridge

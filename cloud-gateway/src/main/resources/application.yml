@@ -1,0 +1,48 @@
+server:
+  port: 9195
+spring:
+  application:
+    name: GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: rule-framework
+          uri: lb://RULE-FRAMEWORK
+          predicates:
+            - Path=/rule/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: rule-framework
+                fallbackuri: forward:/ruleFrameworkFallback
+
+        - id: fera
+          uri: lb://FERA
+          predicates:
+            - Path=/action/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: fera
+                fallbackuri: forward:/feraFallback
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+#eureka:
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#  instance:
+#    hostname: localhost
